@@ -1,4 +1,4 @@
-# wizard-data2
+# client
 
 ## Project setup
 ```
