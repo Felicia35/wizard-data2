@@ -1,10 +1,6 @@
-.idea/
-.env
-
-
 .DS_Store
 node_modules
-*/dist
+/dist
 
 
 # local env files
@@ -25,7 +21,3 @@ pnpm-debug.log*
 *.njsproj
 *.sln
 *.sw?
-
-wizardofoz-cloud-speech-api.json
-wizardofoz-b2c61-firebase-adminsdk-ltw9w-910969f592.json
-.env.development
