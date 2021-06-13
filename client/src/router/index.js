@@ -15,7 +15,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes: [
     {
-      path: '/login',
+      path: '/',
       name: 'login',
       component: Login
     },
@@ -35,7 +35,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   const requiresAuth = to.matched.some(x => x.meta.requiresAuth);
-  if(requiresAuth && !auth.currentUser) next('/login')
+  if(requiresAuth && !auth.currentUser) next('/')
   else next();
 })
 

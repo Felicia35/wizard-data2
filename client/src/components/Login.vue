@@ -78,7 +78,10 @@ export default {
           console.log(res);
           this.$router.push({ name: "Dashboard" });
         })
-        .catch(console.error);
+        .catch(err => {
+          console.error(err);
+          this.$router.replace({ name: 'register'});
+        });
     },
   },
 };
