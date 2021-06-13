@@ -4,12 +4,21 @@ import './registerServiceWorker'
 import router from './router'
 import store from './store'
 import vuetify from './plugins/vuetify'
+import { auth } from './plugins/firebase';
+import moment from 'moment';
+
 
 Vue.config.productionTip = false
+Vue.prototype.$moment = moment;
 
-new Vue({
-  router,
-  store,
-  vuetify,
-  render: h => h(App)
-}).$mount('#app')
+let app;
+auth.onAuthStateChanged(() => {
+  if (!app) {
+    app = new Vue({
+      router,
+      store,
+      vuetify,
+      render: h => h(App)
+    }).$mount('#app')
+  }
+})

@@ -3350,6 +3350,11 @@ csso@^4.0.2:
   dependencies:
     css-tree "^1.1.2"
 
+csv-parse@^4.16.0:
+  version "4.16.0"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.16.0.tgz#b4c875e288a41f7ff917cb0d7d45880d563034f6"
+  integrity sha512-Zb4tGPANH4SW0LgC9+s9Mnequs9aqn7N3/pCqNbVjs2XhEF6yWNU2Vm4OGl1v2Go9nw8rXt87Cm2QN/o6Vpqgg==
+
 cyclist@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cyclist/-/cyclist-1.0.1.tgz#596e9698fd0c80e12038c2b82d6eb1b35b6224d9"
@@ -5992,6 +5997,11 @@ mkdirp@^0.5.1, mkdirp@^0.5.3, mkdirp@^0.5.5, mkdirp@~0.5.1:
   dependencies:
     minimist "^1.2.5"
 
+moment@^2.29.1:
+  version "2.29.1"
+  resolved "https://registry.yarnpkg.com/moment/-/moment-2.29.1.tgz#b2be769fa31940be9eeea6469c075e35006fa3d3"
+  integrity sha512-kHmoybcPV8Sqy59DwNDY3Jefr64lK/by/da0ViFcuA4DH0vQg5Q6Ze5VimxkfQNSC+Mls/Kx53s7TjP1RhFEDQ==
+
 move-concurrently@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/move-concurrently/-/move-concurrently-1.0.1.tgz#be2c005fda32e0b29af1f05d7c4b33214c701f92"
@@ -6475,11 +6485,6 @@ pako@~1.0.5:
   version "1.0.11"
   resolved "https://registry.yarnpkg.com/pako/-/pako-1.0.11.tgz#6c9599d340d54dfd3946380252a35705a6b992bf"
   integrity sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==
-
-papaparse@^5.0.0:
-  version "5.3.1"
-  resolved "https://registry.yarnpkg.com/papaparse/-/papaparse-5.3.1.tgz#770b7a9124d821d4b2132132b7bd7dce7194b5b1"
-  integrity sha512-Dbt2yjLJrCwH2sRqKFFJaN5XgIASO9YOFeFP8rIBRG2Ain8mqk5r1M6DkfvqEVozVcz3r3HaUGw253hA1nLIcA==
 
 parallel-transform@^1.1.0:
   version "1.2.0"
@@ -8807,15 +8812,6 @@ vue-cli-plugin-vuetify@~2.4.1:
     null-loader "^3.0.0"
     semver "^7.1.2"
     shelljs "^0.8.3"
-
-vue-csv-import@^4.0.6:
-  version "4.0.6"
-  resolved "https://registry.yarnpkg.com/vue-csv-import/-/vue-csv-import-4.0.6.tgz#10945ecb4c1a93909e0afc050f5dcf0a1a79e7e6"
-  integrity sha512-piu3JHorbmWfd48qYZpLatI0EgjSi0uIJTGTeEVtIzLNwSwtiwTsSuOYdPtYXc4HCNf3LU6RHh8ZX86qVdpTmg==
-  dependencies:
-    axios "^0.21.1"
-    lodash "^4.17.20"
-    papaparse "^5.0.0"
 
 vue-eslint-parser@^7.0.0:
   version "7.6.0"

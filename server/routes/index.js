@@ -1,9 +1,10 @@
-var express = require('express');
-var router = express.Router();
+const routes = require("express").Router();
+const DataRoute = require("./DataRoute");
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+routes.use("/data", DataRoute);
+
+routes.get("/", (req, res) => {
+  res.status(200).json({ message: "Connected to API" });
 });
 
-module.exports = router;
+module.exports = routes;
