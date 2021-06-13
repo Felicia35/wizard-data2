@@ -6,20 +6,20 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    editorData: [],
+    recordData: [],
   },
   getters: {
-    editorData: (state) => state.editorData,
+    recordData: (state) => state.recordData,
   },
   mutations: {
-    setEditorData(state, editorLists) {
-      state.editorData = editorLists;
+    setRecordData(state, record) {
+      state.recordData.push(record);
     },
   },
   actions: {
-    async importEditorData({ commit }, data) {
-      await Data.importEditorData(data).then((res) => {
-        commit("setEditorData", res);
+    async createRecordData({ commit }, data) {
+      await Data.createRecordData(data).then((res) => {
+        commit("setRecordData", res);
       });
     },
   },
