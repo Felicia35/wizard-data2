@@ -1,26 +1,28 @@
 const sql = require("./db.js");
 
 // constructor
-const Editor = function (text) {
-  this.type = text.type;
-  this.lastContent = text.lastContent;
-  this.newContent = text.newContent;
-  this.projectId = text.projectId;
-  this.projectName = text.projectName;
-  this.username = text.username;
-  this.userRole = text.userRole;
-  this.timestamp = text.timestamp;
+const Editor = function (editor) {
+  this.type = editor.type;
+  this.lastContent = editor.lastContent;
+  this.newContent = editor.newContent;
+  this.projectId = editor.projectId;
+  this.projectName = editor.projectName;
+  this.username = editor.username;
+  this.userRole = editor.userRole;
+  this.timestamp = editor.timestamp;
+  this.recordName = editor.recordName;
 };
 
-Editor.create = ({ editorData }, result) => {
-  sql.query("INSERT INTO text_data SET ?", { editorData }, (err, res) => {
+Editor.create = (editorData, result) => {
+  sql.query("INSERT INTO editor_data (type, lastContent, newContent, projectId, projectName, username, userRole, timestamp, recordName) VALUES ?", 
+  [editorData], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
     
-    result(null, { editorData });
+    result(null, res);
   });
 };
 
