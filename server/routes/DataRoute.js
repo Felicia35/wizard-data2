@@ -1,12 +1,12 @@
 const DataRoute = require("express").Router();
 const DataController = require("../controllers/api/DataController");
 
-DataRoute.get("/eye/:pid", DataController.listEyeData);
-DataRoute.get("/mole/:pid", DataController.listMoleData);
+DataRoute.get("/eye/:recordName", DataController.listEyeData);
+DataRoute.get("/mole/:recordName", DataController.listMoleData);
+DataRoute.get("/editor/:recordName", DataController.listEditorData);
+DataRoute.get("/behavior/:recordName", DataController.listBehaviorData);
 
-DataRoute.get("/editor/:pid", DataController.listEditorData);
-DataRoute.post('/editor/import', DataController.importEditorData);
-
-DataRoute.get("/behavior/:pid", DataController.listBehaviorData);
+DataRoute.post("/create", DataController.createRecordData);
+DataRoute.get('/index', DataController.listRecordData);
 
 module.exports = DataRoute;
