@@ -1,61 +1,31 @@
 <template>
-  <div class="container">
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="card">
-          <div class="card-header">Login</div>
-          <div class="card-body">
-            <div v-if="error" class="alert alert-danger">{{ error }}</div>
-            <form action="#" @submit.prevent="submit">
-              <div class="form-group row">
-                <label for="email" class="col-md-4 col-form-label text-md-right"
-                  >Email</label
-                >
+  <v-form ref="form" v-model="valid">
+    <v-banner>Login</v-banner>
+    <v-container>
+      <v-row>
+        <v-col cols="12" md="4">
+          <v-text-field
+            v-model="email"
+            :rules="emailRules"
+            label="Email"
+            required
+          ></v-text-field>
+        </v-col>
 
-                <div class="col-md-6">
-                  <input
-                    id="email"
-                    type="email"
-                    class="form-control"
-                    name="email"
-                    value
-                    required
-                    autofocus
-                    v-model="form.email"
-                  />
-                </div>
-              </div>
+        <v-col cols="12" md="4">
+          <v-text-field
+            v-model="password"
+            label="Password"
+            required
+          ></v-text-field>
+        </v-col>
 
-              <div class="form-group row">
-                <label
-                  for="password"
-                  class="col-md-4 col-form-label text-md-right"
-                  >Password</label
-                >
-
-                <div class="col-md-6">
-                  <input
-                    id="password"
-                    type="password"
-                    class="form-control"
-                    name="password"
-                    required
-                    v-model="form.password"
-                  />
-                </div>
-              </div>
-
-              <div class="form-group row mb-0">
-                <div class="col-md-8 offset-md-4">
-                  <button type="submit" class="btn btn-primary">Login</button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+        <v-col cols="12" md="4">
+          <v-btn @click="submit" elevation="2" outlined raised>Login in</v-btn>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
 </template>
 
 <script>
@@ -64,24 +34,29 @@ import { auth } from "../plugins/firebase";
 export default {
   data() {
     return {
-      form: {
-        email: "",
-        password: "",
-      },
+      email: "",
+      password: "",
+      valid: true,
+      emailRules: [
+        (v) => !!v || "E-mail is required",
+        (v) => /.+@.+/.test(v) || "E-mail must be valid",
+      ],
     };
   },
   methods: {
     submit() {
-      auth
-        .signInWithEmailAndPassword(this.form.email, this.form.password)
-        .then((res) => {
-          console.log(res);
-          this.$router.push({ name: "Dashboard" });
-        })
-        .catch(err => {
-          console.error(err);
-          this.$router.replace({ name: 'register'});
-        });
+      if (this.$refs.form.validate()) {
+        auth
+          .signInWithEmailAndPassword(this.form.email, this.form.password)
+          .then((res) => {
+            console.log(res);
+            this.$router.push({ name: "Dashboard" });
+          })
+          .catch((err) => {
+            console.error(err);
+            this.$router.replace({ name: "register" });
+          });
+      } else alert("invalid email");
     },
   },
 };
