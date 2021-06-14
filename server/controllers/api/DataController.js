@@ -20,7 +20,7 @@ exports.createRecordData = async (req, res) => {
     timestamp: createInfo.createdAt,
   };
 
-  sql.query("INSERT INTO record_data SET ?", recordData, (err, rd) => {
+  sql.query('INSERT INTO record_data SET ?', recordData, (err, rd) => {
     if (err) {
       res.status(500).send({
         message:
@@ -84,8 +84,18 @@ exports.createRecordData = async (req, res) => {
   });
 };
 
+exports.listRecordData = (req, res) => {
+  sql.query(`SELECT * FROM record_data`, (err, sql_res) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({ message: err.message || "Some error occurred while retrieving eye data." });
+    }
+    else res.status(200).json({ data: sql_res })
+  });
+};
+
 exports.listEyeData = (req, res) => {
-  EyeData.getAll(req.params.pid, (err, data) => {
+  EyeData.getAll(req.params.recordName, (err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -96,7 +106,7 @@ exports.listEyeData = (req, res) => {
 };
 
 exports.listEditorData = (req, res) => {
-  EditorData.getAll(req.params.pid, (err, data) => {
+  EditorData.getAll(req.params.recordName, (err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -107,7 +117,7 @@ exports.listEditorData = (req, res) => {
 };
 
 exports.listMoleData = (req, res) => {
-  MoleData.getAll(req.params.pid, (err, data) => {
+  MoleData.getAll(req.params.recordName, (err, data) => {
     if (err)
       res.status(500).send({
         message:
@@ -118,7 +128,7 @@ exports.listMoleData = (req, res) => {
 };
 
 exports.listBehaviorData = (req, res) => {
-  BehaviorData.getAll(req.params.pid, (err, data) => {
+  BehaviorData.getAll(req.params.recordName, (err, data) => {
     if (err)
       res.status(500).send({
         message:

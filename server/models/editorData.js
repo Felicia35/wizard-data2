@@ -14,20 +14,20 @@ const Editor = function (editor) {
 };
 
 Editor.create = (editorData, result) => {
-  sql.query("INSERT INTO editor_data (type, lastContent, newContent, projectId, projectName, username, userRole, timestamp, recordName) VALUES ?", 
+  sql.query("INSERT INTO editor_data (type, lastContent, newContent, projectId, projectName, username, userRole, timestamp, recordName) VALUES ?",
   [editorData], (err, res) => {
     if (err) {
       console.log("error: ", err);
       result(err, null);
       return;
     }
-    
+
     result(null, res);
   });
 };
 
-Editor.getAll = ({ pid }, result) => {
-  sql.query(`SELECT * FROM editor_data WHERE projectId=${pid}`, (err, res) => {
+Editor.getAll = (recordName, result) => {
+  sql.query(`SELECT * FROM editor_data WHERE recordName='${recordName}'`, (err, res) => {
     if (err) {
       console.error(err);
       result(null, err);

@@ -39,8 +39,8 @@ Eye.create = (eyeData, result) => {
   );
 };
 
-Eye.getAll = ({ pid }, result) => {
-  sql.query(`SELECT * FROM eye_data WHERE projectId=${pid}`, (err, res) => {
+Eye.getAll = (recordName, result) => {
+  sql.query(`SELECT * FROM eye_data WHERE recordName='${recordName}'`, (err, res) => {
     if (err) {
       console.error(err);
       result(null, err);
@@ -49,5 +49,6 @@ Eye.getAll = ({ pid }, result) => {
     result(null, res);
   });
 };
+
 
 module.exports = Eye;

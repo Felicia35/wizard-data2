@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login'
 import Register from '../components/Register'
 import Dashboard from '../components/Dashboard'
+import RecordDetail from '../components/RecordDetail';
 import {auth} from '../plugins/firebase';
 
 
@@ -28,6 +29,12 @@ const router = new VueRouter({
       path: '/dashboard',
       name: 'Dashboard',
       component: Dashboard,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: '/record/:id',
+      name: 'RecordDetail',
+      component: RecordDetail,
       meta: { requiresAuth: true }
     }
   ]

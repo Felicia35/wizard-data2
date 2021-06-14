@@ -25,18 +25,16 @@ Behavior.create = (behaviorData, result) => {
   );
 };
 
-Behavior.getAll = ({ pid }, result) => {
-  sql.query(
-    `SELECT * FROM behavior_data WHERE projectId=${pid}`,
-    (err, res) => {
-      if (err) {
-        console.error(err);
-        result(null, err);
-        return;
-      }
-      result(null, res);
-    }
-  );
+Behavior.getAll = (recordName, result) => {
+    sql.query(`SELECT * FROM behavior_data WHERE recordName='${recordName}'`, (err, res) => {
+        if (err) {
+            console.error(err);
+            result(null, err);
+            return;
+        }
+        result(null, res);
+    });
 };
+
 
 module.exports = Behavior;

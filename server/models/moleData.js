@@ -24,18 +24,15 @@ Mole.create = (moleData, result) => {
   );
 };
 
-Mole.getAll = ({ pid }, result) => {
-  sql.query(
-    `SELECT * FROM mole_data WHERE projectId=${pid}`,
-    (err, res) => {
-      if (err) {
-        console.error(err);
-        result(null, err);
-        return;
-      }
-      result(null, res);
-    }
-  );
+Mole.getAll = (recordName, result) => {
+    sql.query(`SELECT * FROM mole_data WHERE recordName='${recordName}'`, (err, res) => {
+        if (err) {
+            console.error(err);
+            result(null, err);
+            return;
+        }
+        result(null, res);
+    });
 };
 
 module.exports = Mole;
