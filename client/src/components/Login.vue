@@ -47,7 +47,7 @@ export default {
     submit() {
       if (this.$refs.form.validate()) {
         auth
-          .signInWithEmailAndPassword(this.form.email, this.form.password)
+          .signInWithEmailAndPassword(this.email, this.password)
           .then((res) => {
             console.log(res);
             this.$router.push({ name: "Dashboard" });
