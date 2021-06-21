@@ -5,73 +5,50 @@ import Data from "../api/data";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    recordData: [],
-    behaviorDatas: [],
-    moleDatas: [],
-    editorDatas: [],
-    eyeDatas: [],
-  },
-  getters: {
-    recordData: (state) => state.recordData,
-    behaviorDatas: (state) => state.behaviorDatas,
-    moleDatas: (state) => state.moleDatas,
-    editorDatas: (state) => state.editorDatas,
-    eyeDatas: (state) => state.eyeDatas,
-    behaviorMoleDatas: (state) => {
-      return {behaviorDatas: state.behaviorDatas, moleDatas: state.moleDatas}
-    }
-  },
-  mutations: {
-    appendRecordData(state, record) {
-      state.recordData.push(record);
+    state: {
+        recordData: [],
+        visOneDatas: [],
+        visTwoDatas: [],
     },
-    setRecordData(state, records) {
-      state.recordData = records;
+    getters: {
+        recordData: (state) => state.recordData,
+        visOneDatas: (state) => state.visOneDatas,
+        visTwoDatas: (state) => state.visTwoDatas,
     },
-    setEyeData(state, eyes) {
-      state.eyeDatas = eyes;
+    mutations: {
+        appendRecordData(state, record) {
+            state.recordData.push(record);
+        },
+        setRecordData(state, records) {
+            state.recordData = records;
+        },
+        setVisOneData(state, visOneDatas) {
+            state.visOneDatas = visOneDatas;
+        },
+        setVisTwoData(state, visTwoDatas) {
+            state.visTwoDatas = visTwoDatas;
+        },
     },
-    setBehaviorData(state, behaviors) {
-      state.behaviorDatas = behaviors;
+    actions: {
+        async createRecordData({commit}, data) {
+            await Data.createRecordData(data).then((res) => {
+                commit("appendRecordData", res);
+            });
+        },
+        async getRecordData({commit}) {
+            await Data.getRecordData().then((res) => {
+                commit("setRecordData", res);
+            });
+        },
+        async getVisOneData({commit}, recordName) {
+            await Data.getVisOneData(recordName).then((res) => {
+                commit("setVisOneData", res);
+            });
+        },
+        async getVisTwoData({commit}, recordName) {
+            await Data.getVisTwoData(recordName).then((res) => {
+                commit("setVisTwoData", res);
+            });
+        },
     },
-    setEditorData(state, editors) {
-      state.editorDatas = editors;
-    },
-    setMoleData(state, moles) {
-      state.moleDatas = moles;
-    },
-  },
-  actions: {
-    async createRecordData({ commit }, data) {
-      await Data.createRecordData(data).then((res) => {
-        commit("appendRecordData", res);
-      });
-    },
-    async getRecordData({ commit }) {
-      await Data.getRecordData().then((res) => {
-        commit("setRecordData", res);
-      });
-    },
-    async getEyeData({ commit }, recordName) {
-      await Data.getEyeData(recordName).then((res) => {
-        commit("setEyeData", res);
-      });
-    },
-    async getEditorData({ commit }, recordName) {
-      await Data.getEditorData(recordName).then((res) => {
-        commit("setEditorData", res);
-      });
-    },
-    async getBehaviorData({ commit }, recordName) {
-      await Data.getBehaviorData(recordName).then((res) => {
-        commit("setBehaviorData", res);
-      });
-    },
-    async getMoleData({ commit }, recordName) {
-      await Data.getMoleData(recordName).then((res) => {
-        commit("setMoleData", res);
-      });
-    },
-  },
 });

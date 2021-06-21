@@ -28,7 +28,7 @@
                     <v-icon>mdi-account</v-icon>
                   </v-list-item-icon>
                   <v-list-item-content>
-                    <v-list-item-title>{{record.recordCreator}}</v-list-item-title>
+                    <v-list-item-title>{{ record.recordCreator }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
               </v-list-item-group>
@@ -43,12 +43,6 @@
                 column
             >
               <v-chip>5:30PM</v-chip>
-
-              <v-chip>7:30PM</v-chip>
-
-              <v-chip>8:00PM</v-chip>
-
-              <v-chip>9:00PM</v-chip>
             </v-chip-group>
           </v-card-text>
         </v-card>
@@ -69,13 +63,7 @@
             <v-btn icon @click="createDialog = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
-            <v-toolbar-title>Create Recrods</v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-toolbar-items>
-              <v-btn text @click="createRecord">
-                Save
-              </v-btn>
-            </v-toolbar-items>
+            <v-toolbar-title>Create Records</v-toolbar-title>
           </v-toolbar>
         </v-card-title>
         <v-card-text>
@@ -83,7 +71,8 @@
             <v-subheader>General</v-subheader>
             <v-form v-model="valid">
               <v-row class="pa-3">
-                <v-col cols="5">
+                <v-col cols="12" v-text="nowTime"/>
+                <v-col cols="12">
                   <v-text-field
                       v-model="recordName"
                       :rules="nameRules"
@@ -93,7 +82,7 @@
                   ></v-text-field>
                 </v-col>
 
-                <v-col cols="5">
+                <v-col cols="12">
                   <v-text-field
                       v-model="creator"
                       :rules="nameRules"
@@ -102,59 +91,44 @@
                       required
                   ></v-text-field>
                 </v-col>
-
-                <v-col cols="2">
-                  {{ nowTime }}
+                <v-col cols="6">
+                  <v-file-input
+                      @change="inputFile($event, 'vis1Data')"
+                      show-size
+                      accept="xls/xlsx"
+                      label="Visualize One Data"
+                  ></v-file-input>
+                </v-col>
+                <v-col cols="6">
+                  <v-file-input
+                      @change="inputFile($event, 'vis2Data')"
+                      accept="text/csv"
+                      show-size
+                      label="Visualize Two Data"
+                  ></v-file-input>
                 </v-col>
               </v-row>
             </v-form>
           </v-list>
-          <v-divider></v-divider>
-          <v-list three-line subheader>
-            <v-subheader>Upload CSV 🧾</v-subheader>
-            <v-row>
-              <v-col cols="3">
-                <v-file-input
-                    @change="inputFile($event, 'eyeData')"
-                    accept="text/csv"
-                    show-size
-                    label="Eyetracker data"
-                ></v-file-input>
-              </v-col>
-              <v-col cols="3">
-                <v-file-input
-                    @change="inputFile($event, 'moleData')"
-                    show-size
-                    label="Mole data"
-                ></v-file-input>
-              </v-col>
-              <v-col cols="3">
-                <v-file-input
-                    @change="inputFile($event, 'editorData')"
-                    show-size
-                    label="Editor data"
-                ></v-file-input>
-              </v-col>
-              <v-col cols="3">
-                <v-file-input
-                    @change="inputFile($event, 'behaviorData')"
-                    show-size
-                    label="Behavior data"
-                ></v-file-input>
-              </v-col>
-            </v-row>
-          </v-list>
         </v-card-text>
 
         <div style="flex: 1 1 auto;"></div>
+        <v-card-actions>
+          <v-spacer/>
+          <v-btn @click="createRecord" large color="deep-purple">
+            <v-icon class="mr-3">mdi-file</v-icon>
+            Save
+          </v-btn>
+        </v-card-actions>
       </v-card>
     </v-dialog>
   </v-container>
 </template>
 
 <script>
-import csvParser from "csv-parse";
-import {mapGetters, mapActions} from "vuex";
+// import excelToJson  from "convert-excel-to-json";
+import {mapActions, mapGetters} from "vuex";
+import XLSX from "xlsx";
 
 export default {
   namespace: "Dashboard",
@@ -163,10 +137,8 @@ export default {
     return {
       createDialog: false,
 
-      eyeData: {},
-      moleData: {},
-      editorData: {},
-      behaviorData: {},
+      vis1Data: {},
+      vis2Data: {},
 
       valid: false,
       recordName: "",
@@ -192,17 +164,15 @@ export default {
       this.createInfo = {
         recordName: this.recordName,
         recordCreator: this.creator,
-        eyeData: this.eyeData,
-        moleData: this.moleData,
-        editorData: this.editorData,
-        behaviorData: this.behaviorData,
+        visOneData: this.vis1Data ? this.vis1Data : null,
+        visTwoData: this.vis2Data ? this.vis2Data : null,
         createdAt: this.$moment().unix(),
       };
 
       this.$store
           .dispatch("createRecordData", this.createInfo)
           .then(() => {
-            if(confirm('Create Record Success')) {
+            if (confirm('Create Record Success')) {
               this.createDialog = false
               this.getRecordData().catch(console.error);
             }
@@ -210,19 +180,36 @@ export default {
     },
     async inputFile(e, name) {
       if (e) {
-        const fr = new FileReader();
+        const fileReader = new FileReader();
+        const nowTime = this.$moment().unix();
+        fileReader.onload = async ev => {
+          try {
+            const data = ev.target.result;
+            const workbook = XLSX.read(data, {
+              type: "binary"
+            });
+            const toJson = await XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])
+            let visOneData = [];
+            await toJson.map(j => {
+              // value, timestamp, start, end, recordName
+              let d = [];
+              d.push(j['type']);
+              ('value' in j) ? d.push(j['value']) : d.push(null);
+              ('timestamp' in j) ? d.push(j['timestamp']) : d.push(null);
+              ('start' in j) ? d.push(j['start']) : d.push(null);
+              ('end' in j) ? d.push(j['end']) : d.push(null);
+              d.push(`${name}-${nowTime}`)
+              visOneData.push(d)
+            })
+            this[name].name = `${name}-${nowTime}`;
+            this[name].data = visOneData;
 
-        fr.onload = f => {
-          csvParser(f.target.result, {delimiter: ","}, (err, data) => {
-            if (err) console.log(err);
-            else {
-              this[name].name = `${name}-${this.$moment().unix()}`;
-              this[name].data = data;
-            }
-          });
+          } catch (e) {
+            return false;
+          }
         };
+        fileReader.readAsBinaryString(e);
         console.log(this[name]);
-        fr.readAsText(e);
       }
     },
     openDetail(e) {
