@@ -5,6 +5,7 @@
       <v-card
           class="add-card"
           elevation-5
+          color="cyan"
           @click="createDialog = !createDialog"
       >
         <v-card-title>
@@ -15,13 +16,13 @@
 
     <v-row class="mt-2" v-if="recordData">
       <v-col cols="4" v-for="record in recordData" :key="record.recordName">
-        <v-card elevation-5 @click="openDetail(record)">
+        <v-card elevation-5 @click="openDetail(record)" color="cyan darken-4">
           <v-card-title>
-            {{ record.recordName }}
+            Name: {{ record.recordName }}
           </v-card-title>
+          <v-divider class="mx-1"></v-divider>
           <v-card-text>
-            <v-list dense>
-              <v-subheader>REPORTS</v-subheader>
+            <v-list dense color="cyan darken-4">
               <v-list-item-group>
                 <v-list-item>
                   <v-list-item-icon>
@@ -31,18 +32,25 @@
                     <v-list-item-title>{{ record.recordCreator }}</v-list-item-title>
                   </v-list-item-content>
                 </v-list-item>
+                <v-list-item>
+                  <v-list-item-icon>
+                    <v-icon>mdi-clock</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-title>{{ record.timestamp }}</v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
               </v-list-item-group>
             </v-list>
           </v-card-text>
           <v-divider class="mx-4"></v-divider>
-
-          <v-card-title>Data Availability</v-card-title>
           <v-card-text>
             <v-chip-group
                 active-class="deep-purple accent-4 white--text"
                 column
             >
-              <v-chip>5:30PM</v-chip>
+              <v-chip color="lime darken-4" v-if="record.visOneData">{{record.visOneData}}</v-chip>
+              <v-chip v-if="record.visTwoData">{{record.visTwoData}}</v-chip>
             </v-chip-group>
           </v-card-text>
         </v-card>
