@@ -4,7 +4,7 @@ const service = axios.create({
   baseURL:
     process.env.NODE_ENV === "development"
       ? "http://localhost:3000/"
-      : "https://ryanyen2.me/",
+      : "https://ryanyen2.tech/",
   timeout: 10000,
 });
 

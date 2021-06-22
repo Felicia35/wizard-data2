@@ -83,11 +83,14 @@ export default {
   watch: {
     visOneDatas: async function (newVal) {
       let anewVal = newVal;
-      anewVal = newVal.slice(3000, anewVal.length - 1) // 162376 6944087, 162376 7024759
+      anewVal = newVal.slice(0, anewVal.length - 1) // 162376 6944087, 162376 7024759
       // anewVal.push(newVal.slice(11942, 11955))
       let sd = []
       await anewVal.map(async v => {
-        if (v.type === 'eye') await this.series[0].data.push([v.timestamp, v.value])
+        if (v.type === 'eye') {
+          this.series[0].data.push([v.start_time, v.value])
+          this.series[0].data.push([v.end_time, v.value])
+        }
         else if (v.type === 'mole_miss') await this.chartOptions.annotations.xaxis.push({
           x: v.timestamp,
           strokeDashArray: 0,
@@ -133,8 +136,9 @@ export default {
         }
       })
       // console.log(this.chartOptions.annotations.xaxis)
-      this.chartOptions.xaxis.min = this.series[0].data[0].timestamp - 1000
-      this.chartOptions.xaxis.max = this.series[0].data[this.series[0].data.length - 1].timestamp + 1000
+      console.log(1, this.chartOptions.xaxis.min = this.series[0].data)
+      this.chartOptions.xaxis.min = this.series[0].data[0][0] - 1000
+      this.chartOptions.xaxis.max = this.series[0].data[this.series[0].data.length - 1][0] + 1000
     },
   },
   methods: {
@@ -145,7 +149,7 @@ export default {
         case 'speaker':
           return 'rgb(254, 176, 25)';
         case 'speech':
-          return 'rgb(255, 69, 96)';
+          return 'rgb(151,90,220)';
         default:
           return 'rgb(0, 143, 251)';
       }
