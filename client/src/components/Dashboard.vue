@@ -197,20 +197,30 @@ export default {
               type: "binary"
             });
             const toJson = await XLSX.utils.sheet_to_json(workbook.Sheets[workbook.SheetNames[0]])
-            let visOneData = [];
-            await toJson.map(j => {
-              // value, timestamp, start, end, recordName
-              let d = [];
-              d.push(j['type']);
-              ('value' in j) ? d.push(j['value']) : d.push(null);
-              ('timestamp' in j) ? d.push(j['timestamp']) : d.push(null);
-              ('start' in j) ? d.push(j['start']) : d.push(null);
-              ('end' in j) ? d.push(j['end']) : d.push(null);
-              d.push(`${name}-${nowTime}`)
-              visOneData.push(d)
-            })
+            console.log('json', Object.keys(toJson[0]))
+
+
+            let visualizeData = [];
+            if (name === 'vis1Data') {
+              await toJson.map(j => {
+                // value, timestamp, start, end, recordName
+                let d = [];
+                d.push(j['type']);
+                d.push(j['value']);
+                j['timestamp'] ? d.push(j['timestamp']) : d.push(null);
+                j['start'] ? d.push(j['start']) : d.push(null);
+                j['end'] ? d.push(j['end']) : d.push(null);
+                d.push(`${name}-${nowTime}`)
+                visualizeData.push(d)
+              })
+            }
+            else {
+              // timestamp, gaze_event_duration, focus, modified_X, modified_Y, clientX, clientY, innerHTML, anchor, horizontal, vertical, distance, angle, event
+              await toJson.map(j => visualizeData.push([...Object.values(j), ('event' in j) ? j['event'] : null, `${name}-${nowTime}`]))
+            }
+
             this[name].name = `${name}-${nowTime}`;
-            this[name].data = visOneData;
+            this[name].data = visualizeData;
 
           } catch (e) {
             return false;

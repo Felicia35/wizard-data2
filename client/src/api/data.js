@@ -21,7 +21,7 @@ export default {
   },
   async getVisTwoData(recordName) {
     return await axios
-        .get(`/data/${recordName}`)
+        .get(`/data/xyPos/${recordName}`)
         .then((res) => res.data)
         .catch(console.error);
   },

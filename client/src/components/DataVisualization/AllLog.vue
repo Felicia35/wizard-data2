@@ -78,7 +78,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['visOneDatas', 'visTwoDatas']),
+    ...mapGetters(['visOneDatas']),
   },
   watch: {
     visOneDatas: async function (newVal) {

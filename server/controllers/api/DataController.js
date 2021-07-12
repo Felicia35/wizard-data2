@@ -1,4 +1,5 @@
 const VisOneData = require("../../models/visOneData");
+const VisTwoData = require("../../models/visTwoData");
 const sql = require("../../models/db");
 
 exports.createRecordData = async (req, res) => {
@@ -35,6 +36,17 @@ exports.createRecordData = async (req, res) => {
                             });
                 });
             }
+            if (visTwoData) {
+                VisTwoData.createOne(visTwoData.data, (err, data) => {
+                    if (err)
+                        res
+                            .status(500)
+                            .send({
+                                message:
+                                    err.message || "Some error occurred while saving Visualize Two Data.",
+                            });
+                });
+            }
         }
     });
 };
@@ -54,6 +66,17 @@ exports.listAllData = (req, res) => {
             res.status(500).send({
                 message:
                     err.message || "Some error occurred while retrieving Visualize One Data.",
+            });
+        else res.status(200).json({data: data});
+    });
+};
+
+exports.listXYPosition = (req, res) => {
+    VisTwoData.getAllTwo(req.params.recordName, (err, data) => {
+        if (err)
+            res.status(500).send({
+                message:
+                    err.message || "Some error occurred while retrieving XY Position Data.",
             });
         else res.status(200).json({data: data});
     });

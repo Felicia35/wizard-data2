@@ -13,8 +13,10 @@ const VisOne = function (data) {
 VisOne.createOne = (visOneData, result) => {
     // console.log(visOneData)
     sql.query(
-        "INSERT INTO visualize_one (type, value, timestamp, start_time, end_time, recordName) VALUES ?",
-        [visOneData],
+        {
+            sql: 'INSERT INTO visualize_one (type, value, timestamp, start_time, end_time, recordName) VALUES ?',
+            values: [visOneData]
+        },
         (err, res) => {
             if (err) {
                 console.log("error: ", err);

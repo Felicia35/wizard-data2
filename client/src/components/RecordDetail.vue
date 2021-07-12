@@ -29,11 +29,13 @@
 <script>
 import {mapActions} from "vuex";
 import AllLog from './DataVisualization/AllLog';
+import XYPosition from "./DataVisualization/XYPosition";
 
 export default {
   namespace: "RecordDetail",
   components: {
     AllLog,
+    XYPosition,
   },
   data() {
     return {
@@ -45,19 +47,24 @@ export default {
           title: 'All Logs',
           content: 'AllLog',
         },
+        {
+          title: 'XY Position',
+          content: 'XYPosition',
+        },
       ],
     };
   },
   computed: {},
   methods: {
-    ...mapActions(['getVisOneData']),
+    ...mapActions(['getVisOneData', 'getVisTwoData']),
   },
   async created() {
     if (this.$route.query) {
       this.recordDetail = this.$route.query.recordDetail
-      const {visOneData} = this.recordDetail;
+      const {visOneData, visTwoData} = this.recordDetail;
 
       await this.getVisOneData(visOneData).catch(console.error);
+      await this.getVisTwoData(visTwoData).catch(console.error);
     }
   }
 };
